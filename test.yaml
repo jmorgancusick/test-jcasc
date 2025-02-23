@@ -269,6 +269,9 @@ jobs:
                   gitHubTrustPermissions()
                 }
               }
+
+              pruneStaleBranch()
+              pruneStaleTag()
             }
           }
         }
@@ -280,21 +283,38 @@ jobs:
           }
         }
 
-        // Property strategy
-        // IDK
-
         // Scan Organization Triggers
-        triggers {
-            cron('@daily')
-        }
+        
 
         // Orphaned Item Strategy
         orphanedItemStrategy {
           discardOldItems {}
         }
 
-        // Automatic branch project triggering
         properties {
+          // Pipeline Libraries
+          folderLibraries {
+            libraries {
+              libraryConfiguration {
+                name('jenkins-shared-library')
+                defaultVersion('main')
+                allowVersionOverride(true)
+                includeInChangesets(true)
+                retriever {
+                  modernSCM {
+                    scm {
+                      git {
+                        remote('https://github.com/propelinc/jenkins-shared-library.git')
+                        credentialsId('jack-jenkins-lts-github-pat')
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          
+          // Automatic branch project triggering
           suppressFolderAutomaticTriggering {
             branches('.*')
 
@@ -303,6 +323,15 @@ jobs:
             // 'EVENTS' : For matching branches suppress builds triggered by webhooks (continue to trigger from indexing)
             // 'NONE' : For matching branches schedule all builds (nothing is suppressed)
             strategy('INDEXING')
+          }
+        }
+
+        // "Scan Organization Folder Triggers" : 1 day
+        // We need to configure this stuff by hand because JobDSL only allow 'periodic(int min)' for now
+        configure { node ->
+          node / triggers / 'com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger' {
+            spec('H H * * *')
+            interval(86400000)
           }
         }
       }
