@@ -226,8 +226,6 @@ tool:
   mavenGlobalConfig:
     globalSettingsProvider: "standard"
     settingsProvider: "standard"
-
-
 jobs:
   - script: >
       organizationFolder('propelinc') {
