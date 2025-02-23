@@ -227,3 +227,10 @@ tool:
     globalSettingsProvider: "standard"
     settingsProvider: "standard"
 
+
+jobs:
+  - script: >
+      organizationFolder('propelinc') {
+        description("Propel GitHub orga folder configured with JCasC")
+        displayName('Propel')
+      }
