@@ -113,6 +113,8 @@ security:
   gitHostKeyVerificationConfiguration:
     sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
   scriptApproval:
+    approvedSignatures:
+    - "method org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper getRawBuild"
     forceSandbox: false
 unclassified:
   ansiColorBuildWrapper:
@@ -348,40 +350,3 @@ jobs:
         }
       }
       
-      // Approved Scripts Setup
-      import org.jenkinsci.plugins.scriptsecurity.scripts.*
-      ScriptApproval scriptApproval = ScriptApproval.get()
-      scriptApproval.clearApprovedSignatures()
-      [
-        "003f7e63f60f4d2787313fbc4a4b12cd6ed75cf8",
-        "017d0db438428731cd600b6ebda805065433520f",
-        "07b027fd04a8f55c2b71529126a2eb44e77360c4",
-        "0843bdaeb52dd48a96bc460f53c9ecaff0eccf25",
-        "15b8e6fba9f8a32d1ef75a8e9c7c5dc5b240167d",
-        "20f2ecd49fe9bf3c9cf927264c6fdfeea2cddb36",
-        "3648fafa37c931ccb3f3687c67b956cb2b88b556",
-        "3c37469928b478b666246aa59467b0abe97218f9",
-        "3ce1f8cc7a8f4f9f9283fd65a5dc0ab56c5c7655",
-        "439b29449e1dcff49b3251dd719191c6c7776bf9",
-        "439dbe2c4962613241e7767ca6b1223cf400b79d",
-        "60eba59930545aa492a316416eb03afaa275ed9c",
-        "65b97048731be7199dfec2602444600ea90ba8b5",
-        "66a4cbd2878bd5e757f9607de9239bde792eb3e2",
-        "68d922a44a9f23d6eb63d32652d0f1dd3cc9f8b9",
-        "71463010aef15ec76047f959ade7522ac6f0837b",
-        "7f5d824bf98358ce62335a5240494f2fca95d76a",
-        "85d5fe96d3c0a4c8fe60b4eb2b9432f2fdc94698",
-        "8b68652d178acff42bd2c53efedfc9dbdecfb9e2",
-        "8fb9d6669b1283ff3793b49d15349960884135ce",
-        "9a5d3e27aed421a96493520a48492b8bceb498a8",
-        "b23490b3b591c5c1a9c9045958f8b613582d7c9b",
-        "c679377d0eb5206b9131f422a856435265d4d838",
-        "c884241caff28ae7242147695971a3d5476dd984",
-        "d7c32c183e9741cdd76678a954c80d5b24dc3d68",
-        "e18fa1420291d30dcba96d461222ea34bee7a0f8",
-        "ed29cb7b65903e19135e15a0564d9c7b5ceea2e9",
-        "ff0b0e31cff78ab895a6084c2073140351ae82e2"
-      ].each { hash ->
-          scriptApproval.approveScript(hash)
-      }
-      scriptApproval.save()
