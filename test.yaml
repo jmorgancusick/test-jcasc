@@ -228,7 +228,81 @@ tool:
     settingsProvider: "standard"
 jobs:
   - script: >
-      organizationFolder('propelinc') {
-        description("Propel GitHub orga folder configured with JCasC")
+      organizationFolder('propel') {
+        // General
+        description("Propel GitHub org folder configured with JCasC")
         displayName('Propel')
+
+        // "Projects"
+        organizations {
+          github {
+            repoOwner("propelinc")
+            apiUri("https://api.github.com")
+            credentialsId("jack-jenkins-lts-github-pat")
+
+            // "Traits" ("Behaviours" in the GUI) that are "declarative-compatible"
+            traits {
+              gitHubBranchDiscovery {
+                // Values
+                //  1 : Exclude branches that are also filed as PRs
+                //  2 : Only branches that are also filed as PRs
+                //  3 : All branches
+                strategyId(1)
+              }
+
+              gitHubPullRequestDiscovery {
+                // Values
+                // 1 : Merging the pull request with the current target branch revision
+                // 2 : The current pull request revision
+                // 3 : Both the current pull request revision and the pull request merged with the current target branch revision
+                strategyId(2)
+              }
+
+              gitHubForkDiscovery {
+                // Values
+                // 1 : Merging the pull request with the current target branch revision
+                // 2 : The current pull request revision
+                // 3 : Both the current pull request revision and the pull request merged with the current target branch revision
+                strategyId(2)
+
+                trust {
+                  gitHubTrustPermissions()
+                }
+              }
+            }
+          }
+        }
+
+        // Project Recognizers
+        projectFactories{
+          workflowMultiBranchProjectFactory {
+            scriptPath('Jenkinsfile')
+          }
+        }
+
+        // Property strategy
+        // IDK
+
+        // Scan Organization Triggers
+        triggers {
+            cron('@daily')
+        }
+
+        // Orphaned Item Strategy
+        orphanedItemStrategy {
+          discardOldItems {}
+        }
+
+        // Automatic branch project triggering
+        properties {
+          suppressFolderAutomaticTriggering {
+            branches('.*')
+
+            // Values
+            // 'INDEXING' : For matching branches suppress builds triggered by indexing (continue to honor webhooks)
+            // 'EVENTS' : For matching branches suppress builds triggered by webhooks (continue to trigger from indexing)
+            // 'NONE' : For matching branches schedule all builds (nothing is suppressed)
+            strategy('INDEXING')
+          }
+        }
       }
