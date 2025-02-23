@@ -1,233 +1,19 @@
-jenkins:
-  authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
-  clouds:
-  - kubernetes:
-      containerCap: 200
-      containerCapStr: "200"
-      jenkinsTunnel: "jenkins-agent.jenkins-lts.svc.cluster.local:50000"
-      jenkinsUrl: "http://jenkins.jenkins-lts.svc.cluster.local:8080"
-      name: "kubernetes"
-      namespace: "jenkins-lts"
-      podLabels:
-      - key: "jenkins/jenkins-jenkins-agent"
-        value: "true"
-      serverUrl: "https://kubernetes.default"
-      templates:
-      - containers:
-        - args: "^${computer.jnlpmac} ^${computer.name}"
-          envVars:
-          - envVar:
-              key: "JENKINS_URL"
-              value: "http://jenkins.jenkins-lts.svc.cluster.local:8080/"
-          image: "jenkins/inbound-agent:3283.v92c105e0f819-9"
-          name: "jnlp"
-          resourceLimitCpu: "512m"
-          resourceLimitMemory: "512Mi"
-          resourceRequestCpu: "512m"
-          resourceRequestMemory: "512Mi"
-          workingDir: "/home/jenkins/agent"
-        id: "16b8c82fd305e7fec31fc63fcdd70f3b954c6d2498bd7a2d6fc173ad6b37924f"
-        label: "jenkins-jenkins-agent"
-        name: "default"
-        namespace: "jenkins-lts"
-        nodeUsageMode: "NORMAL"
-        podRetention: "never"
-        serviceAccount: "default"
-        slaveConnectTimeout: 100
-        slaveConnectTimeoutStr: "100"
-        yamlMergeStrategy: "override"
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: true
-  disableRememberMe: false
-  labelAtoms:
-  - name: "built-in"
-  - name: "jenkins-jenkins-agent"
-  markupFormatter: "plainText"
-  mode: NORMAL
-  myViewsTabBar: "standard"
-  nodeMonitors:
-  - "architecture"
-  - "clock"
-  - diskSpace:
-      freeSpaceThreshold: "1GiB"
-      freeSpaceWarningThreshold: "2GiB"
-  - "swapSpace"
-  - tmpSpace:
-      freeSpaceThreshold: "1GiB"
-      freeSpaceWarningThreshold: "2GiB"
-  - "responseTime"
-  numExecutors: 0
-  primaryView:
-    all:
-      name: "all"
-  projectNamingStrategy: "standard"
-  quietPeriod: 5
-  remotingSecurity:
-    enabled: true
-  scmCheckoutRetryCount: 0
-  securityRealm:
-    local:
-      allowsSignup: false
-      enableCaptcha: false
-      users:
-      - id: "admin"
-        name: "Jenkins Admin"
-        properties:
-        - "apiToken"
-        - "consoleUrlProvider"
-        - "mailer"
-        - "myView"
-        - preferredProvider:
-            providerId: "default"
-        - "timezone"
-        - "experimentalFlags"
-  slaveAgentPort: 50000
-  updateCenter:
-    sites:
-    - id: "default"
-      url: "https://updates.jenkins.io/update-center.json"
-  views:
-  - all:
-      name: "all"
-  viewsTabBar: "standard"
-globalCredentialsConfiguration:
-  configuration:
-    providerFilter: "none"
-    typeFilter: "none"
-appearance:
-  prism:
-    theme: PRISM
 security:
-  apiToken:
-    creationOfLegacyTokenEnabled: false
-    tokenGenerationOnCreationEnabled: false
-    usageStatisticsEnabled: true
-  cps:
-    hideSandbox: false
-  gitHooks:
-    allowedOnAgents: false
-    allowedOnController: false
-  gitHostKeyVerificationConfiguration:
-    sshHostKeyVerificationStrategy: "knownHostsFileVerificationStrategy"
   scriptApproval:
-    approvedSignatures:
-    - "method org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper getRawBuild"
     forceSandbox: false
-unclassified:
-  ansiColorBuildWrapper:
-    colorMaps:
-    - black: "#000000"
-      blackB: "#4C4C4C"
-      blue: "#1E90FF"
-      blueB: "#4682B4"
-      cyan: "#00CDCD"
-      cyanB: "#00FFFF"
-      green: "#00CD00"
-      greenB: "#00FF00"
-      magenta: "#CD00CD"
-      magentaB: "#FF00FF"
-      name: "xterm"
-      red: "#CD0000"
-      redB: "#FF0000"
-      white: "#E5E5E5"
-      whiteB: "#FFFFFF"
-      yellow: "#CDCD00"
-      yellowB: "#FFFF00"
-    - black: "#000000"
-      blackB: "#555555"
-      blue: "#0000AA"
-      blueB: "#5555FF"
-      cyan: "#00AAAA"
-      cyanB: "#55FFFF"
-      defaultBackground: 0
-      defaultForeground: 7
-      green: "#00AA00"
-      greenB: "#55FF55"
-      magenta: "#AA00AA"
-      magentaB: "#FF55FF"
-      name: "vga"
-      red: "#AA0000"
-      redB: "#FF5555"
-      white: "#AAAAAA"
-      whiteB: "#FFFFFF"
-      yellow: "#AA5500"
-      yellowB: "#FFFF55"
-    - black: "black"
-      blackB: "black"
-      blue: "blue"
-      blueB: "blue"
-      cyan: "cyan"
-      cyanB: "cyan"
-      green: "green"
-      greenB: "green"
-      magenta: "magenta"
-      magentaB: "magenta"
-      name: "css"
-      red: "red"
-      redB: "red"
-      white: "white"
-      whiteB: "white"
-      yellow: "yellow"
-      yellowB: "yellow"
-    - black: "#2E3436"
-      blackB: "#2E3436"
-      blue: "#3465A4"
-      blueB: "#3465A4"
-      cyan: "#06989A"
-      cyanB: "#06989A"
-      defaultBackground: 0
-      defaultForeground: 7
-      green: "#4E9A06"
-      greenB: "#4E9A06"
-      magenta: "#75507B"
-      magentaB: "#75507B"
-      name: "gnome-terminal"
-      red: "#CC0000"
-      redB: "#CC0000"
-      white: "#D3D7CF"
-      whiteB: "#D3D7CF"
-      yellow: "#C4A000"
-      yellowB: "#C4A000"
-  buildDiscarders:
-    configuredBuildDiscarders:
-    - "jobBuildDiscarder"
-  fingerprints:
-    fingerprintCleanupDisabled: false
-    storage: "file"
-  gitHubConfiguration:
-    apiRateLimitChecker: ThrottleForNormalize
-  gitHubPluginConfig:
-    hookUrl: "https://jenkins-lts.easyfoodstamps.com/github-webhook/"
-  junitTestResultStorage:
-    storage: "file"
-  location:
-    adminAddress: "address not configured yet <nobody@nowhere>"
-    url: "https://jenkins-lts.easyfoodstamps.com/"
-  mailer:
-    charset: "UTF-8"
-    useSsl: false
-    useTls: false
-  pollSCM:
-    pollingThreadCount: 10
-  scmGit:
-    addGitTagAction: false
-    allowSecondFetch: false
-    createAccountBasedOnEmail: false
-    disableGitToolChooser: false
-    hideCredentials: false
-    showEntireCommitSummaryInChanges: false
-    useExistingAccountWithSameEmail: false
-tool:
-  git:
-    installations:
-    - home: "git"
-      name: "Default"
-  mavenGlobalConfig:
-    globalSettingsProvider: "standard"
-    settingsProvider: "standard"
+    approvedSignatures:
+    - "field hudson.model.Run project"
+    - "method hudson.model.AbstractItem setDescription java.lang.String"
+    - "method java.io.File getName"
+    - "method java.security.MessageDigest digest"
+    - "method java.security.MessageDigest update byte[]"
+    - "method org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper getRawBuild"
+    - "new java.io.File java.lang.String"
+    - "new java.util.LinkedHashMap"
+    - "staticField java.io.File separator"
+    - "staticMethod java.security.MessageDigest getInstance java.lang.String"
+    - "staticMethod org.codehaus.groovy.runtime.EncodingGroovyMethods encodeHex byte[]"
+    - "staticMethod org.codehaus.groovy.transform.ImmutableASTTransformation checkPropNames java.lang.Object java.util.Map"
 credentials:
   system:
     domainCredentials:
@@ -295,10 +81,6 @@ jobs:
             scriptPath('Jenkinsfile')
           }
         }
-
-        // Scan Organization Triggers
-        
-
         // Orphaned Item Strategy
         orphanedItemStrategy {
           discardOldItems {}
